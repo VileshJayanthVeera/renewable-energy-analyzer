@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoVolt AI - Renewable Energy Analysis</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">EcoVolt <span class="neon-text">AI</span></div>
+        <ul class="nav-links">
+            <li><a href="#wind" class="nav-btn active">Wind Analysis</a></li>
+            <li><a href="#solar" class="nav-btn">Solar Analysis</a></li>
+            <li><a href="#calculator" class="nav-btn">Calculator</a></li>
+            <li><a href="#products" class="nav-btn">Products</a></li>
+            <li><a href="#ai" class="nav-btn">AI Assistant</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <!-- Slide 1: Wind Energy -->
+        <section id="wind" class="slide active">
+            <div class="glass-panel main-panel">
+                <div class="slide-header">
+                    <h1>Wind Energy Analysis</h1>
+                    <p>Select your location in India to analyze wind potential.</p>
+                </div>
+                <div class="map-wrapper glass-inner">
+                    <div id="map"></div>
+                    <div class="map-overlay">Click anywhere to drop a pin</div>
+                </div>
+                <div class="data-grid">
+                    <div class="glass-card stat-card">
+                        <h3>Wind Speed</h3>
+                        <p id="wind-speed" class="stat-value">-- <small>km/h</small></p>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Wind Direction</h3>
+                        <p id="wind-direction" class="stat-value">-- <small>°</small></p>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Air Pressure</h3>
+                        <p id="air-pressure" class="stat-value">-- <small>hPa</small></p>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Temperature</h3>
+                        <p id="temperature" class="stat-value">-- <small>°C</small></p>
+                    </div>
+                </div>
+                <div class="analysis-result glass-card highlight-card">
+                    <div>
+                        <h3>Wind Potential</h3>
+                        <h2 id="wind-classification" class="classification-text neon-text">Pending...</h2>
+                    </div>
+                    <div class="recommendation-box">
+                        <p id="wind-recommendation">Select a location on the map to begin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Solar Energy -->
+        <section id="solar" class="slide">
+            <div class="glass-panel main-panel">
+                <div class="slide-header">
+                    <h1>Solar Energy Analysis</h1>
+                    <p>Analyzing solar irradiance and sunlight data for your selected location.</p>
+                </div>
+                <div class="content-row">
+                    <div class="chart-container glass-inner">
+                        <canvas id="solarChart"></canvas>
+                    </div>
+                    <div class="analysis-result glass-card highlight-card">
+                        <div>
+                            <h3>Solar Potential</h3>
+                            <h2 id="solar-classification" class="classification-text neon-text">Pending...</h2>
+                        </div>
+                        <div class="recommendation-box">
+                            <p id="solar-recommendation">Waiting for location data.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-grid mt-2">
+                    <div class="glass-card stat-card">
+                        <h3>UV Index</h3>
+                        <p id="uv-index" class="stat-value">--</p>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Cloud Cover</h3>
+                        <p id="cloud-cover" class="stat-value">-- <small>%</small></p>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Sunrise</h3>
+                        <p id="sunrise-time" class="stat-value">--:--</p>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Sunset</h3>
+                        <p id="sunset-time" class="stat-value">--:--</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Calculator -->
+        <section id="calculator" class="slide">
+            <div class="glass-panel main-panel row-layout">
+                <div class="input-section glass-card">
+                    <h2>Energy Calculator</h2>
+                    <p class="subtitle">Estimate your solar generation and savings.</p>
+                    <form id="calc-form">
+                        <div class="form-group">
+                            <label>Number of Solar Panels</label>
+                            <input type="number" id="panels" value="4" min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Panel Wattage (W)</label>
+                            <input type="number" id="wattage" value="330" step="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Monthly EB Bill (₹)</label>
+                            <input type="number" id="eb-bill" value="2000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Battery Size (Ah) [Optional]</label>
+                            <input type="number" id="battery-size" value="150" step="10">
+                        </div>
+                        <button type="submit" class="btn primary">Calculate Returns</button>
+                    </form>
+                </div>
+                <div class="results-section glass-card">
+                    <h2>Estimated Returns</h2>
+                    <div class="result-grid">
+                        <div class="stat-card glass-inner">
+                            <h3>Daily Generation</h3>
+                            <p id="daily-gen" class="stat-value neon-text">0 <small>kWh</small></p>
+                        </div>
+                        <div class="stat-card glass-inner">
+                            <h3>Monthly Savings</h3>
+                            <p id="monthly-savings" class="stat-value neon-text">₹ 0</p>
+                        </div>
+                        <div class="stat-card glass-inner">
+                            <h3>CO2 Reduction</h3>
+                            <p id="carbon-reduction" class="stat-value neon-text">0 <small>kg/mo</small></p>
+                        </div>
+                        <div class="stat-card glass-inner">
+                            <h3>Battery Backup</h3>
+                            <p id="battery-backup" class="stat-value neon-text">0 <small>hrs</small></p>
+                        </div>
+                    </div>
+                    <div class="roi-banner glass-inner mt-2">
+                        <h3>Estimated ROI Time</h3>
+                        <h2 id="roi-time" class="neon-text">-- Years</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Products -->
+        <section id="products" class="slide">
+            <div class="glass-panel main-panel">
+                <div class="slide-header">
+                    <h1>Recommended Products</h1>
+                    <p>Curated list of solar panels, turbines, and inverters for Indian conditions.</p>
+                </div>
+                
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="solar">Solar Panels</button>
+                    <button class="filter-btn" data-filter="inverter">Inverters & Batteries</button>
+                    <button class="filter-btn" data-filter="wind">Wind Turbines</button>
+                </div>
+
+                <div class="product-grid" id="product-container">
+                    <!-- Product cards injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: AI Assistant -->
+        <section id="ai" class="slide">
+            <div class="glass-panel main-panel chat-layout">
+                <div class="chat-header">
+                    <div class="ai-avatar">🤖</div>
+                    <div>
+                        <h2>EcoVolt AI Assistant</h2>
+                        <p>Ask me about setups, costs, or energy-saving tips.</p>
+                    </div>
+                </div>
+                <div class="chat-box glass-inner" id="chat-box">
+                    <div class="message bot">
+                        <div class="bubble">Hello! I am your renewable energy assistant. I can help you plan your solar or wind setup. How can I help you today?</div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Type your question here (e.g. What is the best solar setup for 1BHK?)">
+                    <button id="send-btn" class="btn primary">Send</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
